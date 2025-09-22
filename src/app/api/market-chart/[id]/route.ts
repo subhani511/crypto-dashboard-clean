@@ -1,14 +1,28 @@
-// app/api/market-chart/[id]/route.ts
+// src/app/api/market-chart/[id]/route.ts
 import { NextResponse, NextRequest } from "next/server";
 
 const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string | string[] } } // accept string | string[]
 ) {
   try {
-    const url = `${COINGECKO_BASE}/coins/${params.id}/market_chart?vs_currency=usd&days=1`;
+    // normalize id to a single string
+    const rawId = params?.id;
+    const id = Array.isArray(rawId) ? rawId[0] : rawId;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Missing id parameter" },
+        { status: 400 }
+      );
+    }
+
+    const url = `${COINGECKO_BASE}/coins/${encodeURIComponent(
+      id
+    )}/market_chart?vs_currency=usd&days=1`;
+
     const res = await fetch(url, {
       headers: { Accept: "application/json" },
       cache: "no-store",
