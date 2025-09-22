@@ -1,15 +1,15 @@
 // src/app/api/market-chart/[id]/route.ts
 import { NextResponse, NextRequest } from "next/server";
 
-const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
-
+// RouteContext is a globally available helper in Next for typing route contexts.
+// Use the route literal that matches your route file path.
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string | string[] } } // accept string | string[]
+  ctx: RouteContext<"/api/market-chart/[id]">
 ) {
   try {
-    // normalize id to a single string
-    const rawId = params?.id;
+    // ctx.params may be async — await it to be safe and match types
+    const { id: rawId } = await ctx.params;
     const id = Array.isArray(rawId) ? rawId[0] : rawId;
 
     if (!id) {
@@ -19,6 +19,7 @@ export async function GET(
       );
     }
 
+    const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
     const url = `${COINGECKO_BASE}/coins/${encodeURIComponent(
       id
     )}/market_chart?vs_currency=usd&days=1`;
