@@ -1,10 +1,10 @@
 // app/api/market-chart/[id]/route.ts
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
 
 export async function GET(
-  _req: Request,
+  _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
