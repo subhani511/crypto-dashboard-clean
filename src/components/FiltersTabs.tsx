@@ -29,7 +29,8 @@ export default function FiltersTabs({
   onChange,
   className = "",
 }: Props) {
-  const buttonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  // typed as an array of nullable HTMLButtonElement
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const focusByIndex = useCallback((i: number) => {
     const btn = buttonRefs.current[i];
@@ -80,15 +81,25 @@ export default function FiltersTabs({
               key={t.key}
               type="button"
               id={id}
-              ref={(el) => (buttonRefs.current[idx] = el)}
+              ref={(el) => {
+                buttonRefs.current[idx] = el;
+              }}
               role="tab"
-              aria-selected={isActive ? "true" : "false"}
+              aria-selected={isActive}
               aria-controls={panelId}
               tabIndex={isActive ? 0 : -1}
               onClick={() => onChange(t.key)}
               onKeyDown={(e) => handleKey(e, idx, t.key)}
               className={[
-                "appearance-none rounded-full px-3 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-offset-1",
+                "appearance-none",
+                "rounded-full",
+                "px-3",
+                "py-1.5",
+                "text-sm",
+                "font-semibold",
+                "focus:outline-none",
+                "focus:ring-2",
+                "focus:ring-offset-1",
                 isActive
                   ? "bg-green-50 border border-green-100 text-green-700 shadow-sm"
                   : "bg-white border border-gray-100 text-gray-700 hover:bg-gray-50",

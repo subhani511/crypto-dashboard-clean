@@ -10,7 +10,8 @@ export type RawCoin = {
   market_cap_rank?: number | null;
   price_change_24h?: number | null;
   price_change_percentage_24h?: number | null;
-  circulating_supply?: number;
+  // allow null since CoinGecko may return null
+  circulating_supply?: number | null;
 };
 
 export type Coin = {

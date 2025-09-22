@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCoinsMarkets, getTrending } from "@/lib/api";
 import { adaptCoin } from "@/lib/coinAdapter";
-import { Coin, RawCoin } from "@/lib/types";
+import { Coin, RawCoin } from "@/lib/types"; // add CoinGeckoMarket
 import HighlightsGrid from "./HighlightsGrid";
 
 type TrendingItem = {
@@ -32,7 +32,6 @@ export default function HighlightsSection() {
     refetchInterval: 30_000,
   });
 
-  // ✅ Always define derived values BEFORE conditional returns
   const markets: Coin[] = (marketsQ.data ?? []).map(adaptCoin);
 
   const trending: Coin[] = (trendingQ.data ?? []).map((c: TrendingItem) =>
